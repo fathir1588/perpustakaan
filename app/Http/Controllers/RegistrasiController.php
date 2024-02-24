@@ -3,32 +3,52 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User; // Pastikan Anda mengimpor model User jika menggunakan model User untuk penyimpanan data pengguna
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class RegistrasiController extends Controller
 {
+    /**
+     * Tampilkan formulir registrasi.
+     *
+     * @return \Illuminate\View\View
+     */
     public function showRegistrationForm()
     {
-        return view('regis.registrasi'); // Mengembalikan view untuk halaman registrasi
+        return view('regis.registrasi');
     }
 
+    /**
+     * Tangani permintaan registrasi yang masuk.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function register(Request $request)
     {
-        // Validasi data yang diterima dari form registrasi
+        // Validate the form data
+        // dd($request->username);
         $request->validate([
-            'username' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'username' => ['required', 'string', 'max:250'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:3'],
+            'role' => ['required', 'string', 'in:admin,petugas,peminjam'],
         ]);
-
-        // Buat pengguna baru berdasarkan data yang diterima dari form
-        $user = User::create([
+        
+        // Check if the username is available
+        if (User::where('username', $request->username)->exists()) {
+            return back()->withErrors(['username' => 'Username sudah digunakan.'])->withInput();
+        }
+        
+        // Create the user
+        User::create([
             'username' => $request->username,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
 
-        // Redirect ke halaman setelah registrasi berhasil
-        return redirect()->route('/')->with('success', 'Akun Anda berhasil dibuat. Silakan masuk.');
+        // Redirect the user after registration
+        return redirect()->route('login')->with('success', 'Registrasi berhasil. Silakan login.');
     }
 }

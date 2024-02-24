@@ -34,8 +34,11 @@ Route::get('/delete/{id}', [BukuController::class, 'delete'])->name('delete');
 
 Route::get('/peminjaman', [Peminjaman::class, 'index'])->name('index');
 
+
+
 Route::get('/register', [RegistrasiController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegistrasiController::class, 'register']);
+Route::post('/registerr', [RegistrasiController::class, 'register'])->name('registerr');
+
 
 
 
