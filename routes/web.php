@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BukuController;
-use App\Http\Controllers\peminjaman;
+use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\RegistrasiController;
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +32,7 @@ Route::put('/editbuku/{id}', [BukuController::class, 'updatedata'])->name('editb
 Route::post('/updatedata/{id}', [BukuController::class, 'updatedata'])->name('updatedata');
 Route::get('/delete/{id}', [BukuController::class, 'delete'])->name('delete');
 
-Route::get('/peminjaman', [Peminjaman::class, 'index'])->name('index');
+Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('index');
 
 
 
@@ -41,6 +41,7 @@ Route::post('/registerr', [RegistrasiController::class, 'register'])->name('regi
 
 
 
+Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman');
 
 
 
