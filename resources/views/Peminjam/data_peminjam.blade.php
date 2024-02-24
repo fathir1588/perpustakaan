@@ -40,7 +40,7 @@
                 <div class="container-fluid">
                     <div class="row mb-1">
                         <div class="col-sm-6">
-                            <h1 class="m-0">DATA BUKU</h1>
+                            <h1 class="m-0">PEMINJAMAN</h1>
                         </div>
                     </div>
                 </div>

@@ -16,9 +16,8 @@ use App\Http\Controllers\RegistrasiController;
 |
 */
 
-Route::get('/home', function () {
-    return view('layout.main');
-});
+
+Route::get('/home', [BukuController::class, 'home'])->name('total_buku');
 
 Route::get('/', [LoginController::class, 'halamanlogin'])->name('login');
 Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');

@@ -9,9 +9,17 @@ class BukuController extends Controller
 {
     public function index()
     {
+        
         $data_buku = ModelBuku::all();   
-        return view('katalogbuku.buku_data' , compact ('data_buku'));
+        return view('katalogbuku.buku_data', compact('data_buku'));
     }
+    public function home()
+    {
+        $totalBuku = ModelBuku::count(); // Menghitung jumlah buku dari database
+        return view('layout.main', compact('totalBuku'));
+    }
+
+
 
     public function buku_input()
     {
