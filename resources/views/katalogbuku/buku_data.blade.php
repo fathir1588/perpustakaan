@@ -42,9 +42,11 @@
                         <div class="col-sm-6">
                             <h1 class="m-0">DATA BUKU</h1>
                         </div>
+                        @hasanyrole('admin|petugas')
                         <div class="col-sm-6 text-right"> <!-- Mengatur tata letak elemen di sebelah kanan -->
                             <a class="btn btn-primary" data-toggle="modal" data-target="#tambahDataModal">Tambah Buku</a>
                         </div>
+                        @endrole
                     </div>
                 </div>
             </div>
@@ -58,12 +60,14 @@
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th scope="col" class="text-center">ID BUKU</th>
+                        <th scope="col" class="text-center">NO</th>
                         <th scope="col" class="text-center">JUDUL</th>
                         <th scope="col" class="text-center">PENULIS</th>
                         <th scope="col" class="text-center">PENERBIT</th>
                         <th scope="col" class="text-center">TAHUN TERBIT</th>
+                        @hasanyrole('admin|petugas')
                         <th scope="col" class="text-center">AKSI</th>
+                        @endrole
                     </tr>
                 </thead>
                 <tbody>
@@ -76,6 +80,7 @@
                         <td class="text-center">{{ $v->penulis }}</td>
                         <td class="text-center">{{ $v->penerbit }}</td>
                         <td class="text-center">{{ $v->tahun_terbit }}</td>
+                        @hasanyrole('admin|petugas')
                         <td class="text-center">
         
                             {{-- <a href="/tampilkandata/{{ $v->id }}" class="btn btn-info">Edit</a> --}}
@@ -83,7 +88,8 @@
                               <i class="fas fa-edit"></i>
                           </a>
                             <a href="#" class="btn btn-danger delete btn-sm" data-id ="{{ $v->id }}" data-judul ="{{ $v->judul }}"><i class="fas fa-trash"></i></a>
-                                
+                        </td>
+                        @endrole    
                     </tr>
                     @endforeach
                     @else

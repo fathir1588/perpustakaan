@@ -42,6 +42,9 @@
                         <div class="col-sm-6">
                             <h1 class="m-0">PEMINJAMAN</h1>
                         </div>
+                        <div class="col-sm-6 text-right"> <!-- Mengatur tata letak elemen di sebelah kanan -->
+                            <a class="btn btn-primary" data-toggle="modal" data-target="#modal-detailpinjam">Pinjam Buku</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -55,9 +58,9 @@
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th scope="col" class="text-center">ID PEMINJAMAN</th>
-                        <th scope="col" class="text-center">ID ANGGOTA</th>
-                        <th scope="col" class="text-center">ID BUKU</th>
+                        <th scope="col" class="text-center">NO</th>
+                        <th scope="col" class="text-center">PEMINJAM</th>
+                        <th scope="col" class="text-center">BUKU</th>
                         <th scope="col" class="text-center">TANGGAL PEMINJAMAN</th>
                         <th scope="col" class="text-center">Tanggal Pengembalian</th>
                         <th scope="col" class="text-center">Status</th>
@@ -91,6 +94,53 @@
             </section>
         </div>
 
+
+        @foreach ($buku as $item)
+    <!-- Modal Detail Peminjaman -->
+    <div class="modal fade" id="modal-detailpinjam">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title font-weight-bold">Detail Buku</h4>
+                </div>
+
+                <!-- Formulir Detail Pinjam -->
+                <form action="{{ route('peminjaman.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <!-- Isi Detail Buku -->
+                            <div class="form-group">
+                                <label for="judul">Judul</label>
+                                <select class="form-control" id="judul" name="judul" required>
+                                        @foreach ($buku as $item)
+                                        <option value="{{ $item->judul }}">{{ $item->judul }}</option>
+                                        @endforeach
+                                </select>
+                            </div>
+                          <div class="form-group">
+                            <label for="stok">Jumlah Pinjam</label>
+                            <input type="number" class="form-control" id="stok" name="stok" value="1" min="1" max="{{ $item->stok }}" required autofocus>
+                        </div>
+                          <!-- Tambahkan Input Hidden untuk buku_id -->
+                          {{-- <input type="hidden" name="buku_id" value="{{ $item->id }}"> --}}
+                          
+                          <!-- Tambahkan Input Tanggal Peminjaman -->
+                          <div class="form-group">
+                              <label for="tanggal_peminjaman">Tanggal Peminjaman</label>
+                              <input type="text" class="form-control" id="tanggal_peminjaman" name="tanggal_peminjaman" value="{{ $item->created_at }}" readonly>
+                          </div>
+                        </div>
+                        <div class="modal-footer justify-content-end">
+                            <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary font-weight-bold">Konfirmasi Pinjam</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    @endforeach
 
 
         {{-- Close Konten Dashboard --}}

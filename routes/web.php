@@ -17,30 +17,39 @@ use App\Http\Controllers\RegistrasiController;
 */
 
 
-Route::get('/home', [BukuController::class, 'home'])->name('total_buku');
 
 Route::get('/', [LoginController::class, 'halamanlogin'])->name('login');
 Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-
-Route::get('/buku', [BukuController::class, 'index'])->name('buku');
-Route::get('/bukuinput', [BukuController::class, 'buku_input'])->name('buku_input');
-Route::post('/insertdata', [BukuController::class, 'insertdata'])->name('insertdata');
-Route::get('/tampilkandata/{id}', [BukuController::class, 'tampilkandata'])->name('tampilkandata');
-Route::put('/editbuku/{id}', [BukuController::class, 'updatedata'])->name('editbuku');
-Route::post('/updatedata/{id}', [BukuController::class, 'updatedata'])->name('updatedata');
-Route::get('/delete/{id}', [BukuController::class, 'delete'])->name('delete');
-
-Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('index');
-
-
-
 Route::get('/register', [RegistrasiController::class, 'showRegistrationForm'])->name('register');
 Route::post('/registerr', [RegistrasiController::class, 'register'])->name('registerr');
 
 
+Route::group(['middleware' => ['role:admin|petugas']], function () {
+    Route::get('/bukuinput', [BukuController::class, 'buku_input'])->name('buku_input');
+    Route::post('/insertdata', [BukuController::class, 'insertdata'])->name('insertdata');
+    Route::get('/tampilkandata/{id}', [BukuController::class, 'tampilkandata'])->name('tampilkandata');
+    Route::put('/editbuku/{id}', [BukuController::class, 'updatedata'])->name('editbuku');
+    Route::post('/updatedata/{id}', [BukuController::class, 'updatedata'])->name('updatedata');
+    Route::get('/delete/{id}', [BukuController::class, 'delete'])->name('delete');
+});
 
-Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman');
+Route::group(['middleware' => ['role:admin|petugas|peminjam']], function () {
+    Route::get('/buku', [BukuController::class, 'index'])->name('buku');
+    Route::get('/home', [BukuController::class, 'home'])->name('total_buku');
+    Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('index');
+    Route::post('/peminjaman' ,[PeminjamController::class, 'store'])->name('peminjaman.store');
+});
+
+
+
+
+
+
+
+
+
+
 
 
 
