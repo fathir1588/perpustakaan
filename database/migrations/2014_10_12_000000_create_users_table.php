@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('username');
-            $table->enum('role', ['admin', 'petugas', 'peminjam'])->default('peminjam');
+            $table->enum('role', ['admin', 'petugas', 'peminjam'])->nullable();
             $table->string('email')->unique(); // Pastikan email adalah unik
             $table->string('password');
             $table->rememberToken();

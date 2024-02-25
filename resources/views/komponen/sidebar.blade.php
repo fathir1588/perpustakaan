@@ -39,6 +39,7 @@
                         </p>
                     </a>
                 </li>
+                @hasanyrole('admin|petugas')
                 <li class="nav-item">
                     <a href="/petugas" class="nav-link">
                         <i class="nav-icon fas fa-clipboard-user"></i>
@@ -47,14 +48,15 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
+                @endrole
+                {{-- <li class="nav-item">
                     <a href="/" class="nav-link">
                         <i class="nav-icon fa-regular fa-comments"></i>
                         <p>
                             Ulasan Buku
                         </p>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a href="peminjaman" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>

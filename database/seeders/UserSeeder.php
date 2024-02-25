@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserSeeder extends Seeder
 {
@@ -14,13 +14,35 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::truncate(); // Menyegarkan data tabel sebelum menambahkan data baru
-        User::create([
-            'username' => 'Admin',
-            'role' => 'admin',
-            'email' => 'admin@gmail.com',
-            'password' => Hash::make('admin'), // Menggunakan Hash::make untuk mengenkripsi password
-            'remember_token' => Str::random(60),
+        Role::insert([
+            ['name' => 'admin', 'guard_name' => 'web'],
+            ['name' => 'petugas', 'guard_name' => 'web'],
+            ['name' => 'peminjam', 'guard_name' => 'web'],
         ]);
+
+        $admin = new User();
+
+        $admin->username = "ADMIN";
+        $admin->password = bcrypt("password");
+        $admin->email = "admin@gmail.com";
+        $admin->role = "admin";
+        $admin->save();
+        $admin->assignRole('admin');
+
+        $petugas = new User();
+        $petugas->username = "PETUGAS";
+        $petugas->password = bcrypt("password");
+        $petugas->email = "petugas@gmail.com";
+        $petugas->role = "petugas";
+        $petugas->save();
+        $petugas->assignRole('petugas');
+
+        $user = new User();
+        $user->username = "FATHIR";
+        $user->password = bcrypt("password");
+        $user->email = "peminjam@gmail.com";
+        $user->role = "peminjam";
+        $user->save();
+        $user->assignRole('peminjam');
     }
 }
