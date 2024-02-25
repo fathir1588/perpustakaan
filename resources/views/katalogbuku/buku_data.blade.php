@@ -131,8 +131,6 @@
               <input type="number" class="form-control" id="tahun_terbit" name="tahun_terbit" placeholder="Masukkan tahun terbit" required>
             </div>
             <button type="submit" class="btn btn-primary">Tambah</button>
-
-            
           </form>
         </div>
       </div>
