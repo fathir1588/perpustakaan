@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BukuController;
-use App\Http\Controllers\peminjaman;
-
+use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\RegistrasiController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,16 +16,10 @@ use App\Http\Controllers\peminjaman;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome.welcome');
-});
 
+Route::get('/home', [BukuController::class, 'home'])->name('total_buku');
 
-Route::get('/home', function () {
-    return view('layout.main');
-});
-
-Route::get('/login', [LoginController::class, 'halamanlogin'])->name('login');
+Route::get('/', [LoginController::class, 'halamanlogin'])->name('login');
 Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -37,11 +31,16 @@ Route::put('/editbuku/{id}', [BukuController::class, 'updatedata'])->name('editb
 Route::post('/updatedata/{id}', [BukuController::class, 'updatedata'])->name('updatedata');
 Route::get('/delete/{id}', [BukuController::class, 'delete'])->name('delete');
 
-Route::get('/peminjaman', [Peminjaman::class, 'index'])->name('index');
+Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('index');
 
 
 
+Route::get('/register', [RegistrasiController::class, 'showRegistrationForm'])->name('register');
+Route::post('/registerr', [RegistrasiController::class, 'register'])->name('registerr');
 
+
+
+Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman');
 
 
 

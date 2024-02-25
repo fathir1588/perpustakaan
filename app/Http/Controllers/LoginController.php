@@ -16,11 +16,16 @@ class LoginController extends Controller
         if(Auth::attempt($request->only('email','password'))){
             return redirect('/home');
         }
-        return redirect('/login');
+        return redirect('/home');
     }
 
     public function logout(){
         Auth::logout();
-        return redirect('/login');
+        return redirect('/');
+    }
+
+    public function halamanregistrasi(){
+        return view('regis.registrasi');
+
     }
 }

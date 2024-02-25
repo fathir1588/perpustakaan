@@ -82,7 +82,7 @@
                             <a href="#" class="btn btn-warning btn-sm editBtn" data-toggle="modal" data-target="#modal-editadmin-{{ $v->id }}" data-id="{{ $v->id }}">
                               <i class="fas fa-edit"></i>
                           </a>
-                            <a href="#" class="btn btn-danger delete" data-id ="{{ $v->id }}" data-judul ="{{ $v->judul }}"> Hapus</a>
+                            <a href="#" class="btn btn-danger delete btn-sm" data-id ="{{ $v->id }}" data-judul ="{{ $v->judul }}"><i class="fas fa-trash"></i></a>
                                 
                     </tr>
                     @endforeach
