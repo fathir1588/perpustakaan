@@ -15,11 +15,20 @@ class LoginController extends Controller
     }
 
     public function postlogin(Request $request){
+        // Validasi reCAPTCHA
+        $request->validate([
+            'g-recaptcha-response' => 'required|captcha'
+        ]);
+    
+        // Auth::attempt untuk mencoba login
         if(Auth::attempt($request->only('email','password'))){
             return redirect('/home');
         }
-        return redirect('/home');
+        
+        // Jika login gagal karena email atau password salah
+        return redirect('/login')->with('error', 'Email atau password yang Anda masukkan salah.');
     }
+    
 
     public function logout(){
         Auth::logout();

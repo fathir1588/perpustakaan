@@ -2,13 +2,24 @@
 <html lang="en">
 <head>
     @include('layout.head')
+    <!-- Tambahkan script reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body class="hold-transition login-page">
     <div class="login-box">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <strong>Error!</strong> <br>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="login-logo">
             <a href="{{ route('postlogin') }}"><b>Perpus</b>Digital</a>
         </div>
-
         <div class="card">
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Masukkan Akun Anda</p>
@@ -30,6 +41,8 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Tambahkan widget reCAPTCHA -->
+                    <div class="g-recaptcha" data-sitekey="6LexVIEpAAAAAJWoK_-PhuHeOP1ET1WT-AU-Dy7d"></div>
                     <div class="row">
                         <div class="col-8">
                             <div class="icheck-primary">
@@ -41,14 +54,12 @@
                         </div>
                     </div>
                 </form>
-
                 <!-- Tombol Registrasi -->
                 <div class="row mt-3">
                     <div class="col-12 text-center">
                         <p>Belum punya akun? <a href="{{ route('register') }}">Daftar disini</a></p>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
