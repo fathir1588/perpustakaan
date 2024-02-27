@@ -11,12 +11,22 @@ use Illuminate\Http\Request;
 
 class PeminjamanController extends Controller
 {
+    
     public function index()
-    {
-        $peminjamans = Peminjaman::all();
-        $buku = ModelBuku::all();
-        return view('peminjam.data_peminjam', compact('peminjamans', 'buku'));
-    }
+{
+    // Mengambil ID pengguna yang sedang login
+    $userId = auth()->id();
+
+    // Mengambil data peminjaman yang dimiliki oleh pengguna yang sedang login
+    $peminjamans = Peminjaman::where('user_id', $userId)->get();
+
+    // Mengambil semua data buku
+    $buku = ModelBuku::all();
+
+    // Mengirim data peminjaman dan data buku ke view
+    return view('peminjam.data_peminjam', compact('peminjamans', 'buku'));
+}
+
 
     public function store(Request $request)
 {
@@ -54,10 +64,32 @@ class PeminjamanController extends Controller
 }
 
 
+    // public function returnBook($id)
+    // {
+    //     $peminjaman = Peminjaman::findOrFail($id);
+    
+    //     // Ubah status peminjam berdasarkan nilai enum yang diizinkan
+    //     if ($peminjaman->status_peminjam == 'belum dikembalikan') {
+    //         $peminjaman->status_peminjam = 'sudah dikembalikan';
+    //     } else {
+    //         $peminjaman->status_peminjam = 'belum dikembalikan';
+    //     }
+    //     $peminjaman->tanggal_pengembalian = Carbon::now();
+    //     // Simpan perubahan status peminjam
+    //     $peminjaman->save();
+    
+    //     // Redirect ke halaman terkait dengan pesan sukses
+    //     return redirect()->back()->with('success', 'Status berhasil diubah.');
+    // }
     public function returnBook($id)
     {
         $peminjaman = Peminjaman::findOrFail($id);
-    
+
+        // Pastikan bahwa peminjaman yang akan dikembalikan milik pengguna yang sedang login
+        if ($peminjaman->user_id != Auth::id()) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk mengembalikan peminjaman ini.');
+        }
+
         // Ubah status peminjam berdasarkan nilai enum yang diizinkan
         if ($peminjaman->status_peminjam == 'belum dikembalikan') {
             $peminjaman->status_peminjam = 'sudah dikembalikan';
@@ -67,7 +99,7 @@ class PeminjamanController extends Controller
         $peminjaman->tanggal_pengembalian = Carbon::now();
         // Simpan perubahan status peminjam
         $peminjaman->save();
-    
+
         // Redirect ke halaman terkait dengan pesan sukses
         return redirect()->back()->with('success', 'Status berhasil diubah.');
     }

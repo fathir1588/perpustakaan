@@ -47,6 +47,7 @@
                             <a class="btn btn-primary" data-toggle="modal" data-target="#modal-detailpinjam">Pinjam Buku</a>
                             <a href="{{ route('laporan_peminjam') }}" class="btn btn-success">Cetak Laporan</a>
                         </div>
+                        
                     </div>
                 </div>
             </div>

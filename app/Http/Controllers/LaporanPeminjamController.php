@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use PDF;   
-use Illuminate\Http\Request;
-use App\Models\Peminjaman; // Pastikan menyesuaikan namespace dengan model Anda
-use App\Models\ModelBuku;
 use Dompdf\Dompdf;
+use App\Models\ModelBuku;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Peminjaman; // Pastikan menyesuaikan namespace dengan model Anda
 
 
 class LaporanPeminjamController extends Controller
@@ -20,11 +21,17 @@ class LaporanPeminjamController extends Controller
     //Buku
     public function downloadPeminjamPDF(Request $request)
     {
-        $data = Peminjaman::all(); // Gantilah dengan logika pengambilan data yang sesuai
-        $pdf = PDF::loadView('Peminjam.pdf_peminjaman', compact('data')); // Gantilah dengan nama view dan variabel yang sesuai
-
-        // Langsung mencetak PDF
-        return $pdf->stream('data_buku.pdf');
+        // Mengambil ID pengguna yang sedang login
+        $userId = Auth::id();
+    
+        // Mengambil data peminjaman yang dimiliki oleh pengguna yang sedang login
+        $data = Peminjaman::where('user_id', $userId)->get();
+    
+        // Membuat PDF dari data yang diperoleh
+        $pdf = PDF::loadView('Peminjam.pdf_peminjaman', compact('data'));
+    
+        // Mengembalikan PDF sebagai stream
+        return $pdf->stream('data_peminjaman.pdf');
     }
 
 }
