@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\LaporanBukuController;
+use App\Http\Controllers\LaporanPeminjamController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,8 +42,8 @@ Route::group(['middleware' => ['role:admin|petugas|peminjam']], function () {
     Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('index');
     Route::post('/peminjaman' ,[PeminjamanController::class, 'store'])->name('peminjaman.store');
     Route::put('/peminjaman/{id}', [PeminjamanController::class, 'returnBook'])->name('peminjaman.return');
-    Route::get('/laporan-buku' ,[LaporanBukuController::class, 'index'])->name('laporan');
-    
+    Route::get('/laporan-peminjam' ,[LaporanPeminjamController::class, 'downloadPeminjamPDF'])->name('laporan_peminjam');
+    Route::get('/laporan-buku' ,[LaporanBukuController::class, 'downloadBukuPDF'])->name('laporan_buku');
 });
 
 

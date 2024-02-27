@@ -70,11 +70,6 @@
         table {
             margin-top: -5px;
         }
-        /* CSS to change text to uppercase */
-        .uppercase {
-            text-transform: uppercase;
-        }
-    </style>
     </style>
 </head>
 <body>
@@ -89,7 +84,7 @@
                 </td>
                 <td>
                     <center>
-                        <font size="4">LAPORAN PEMINJAMAN BUKU</font><br>
+                        <font size="4">LAPORAN BUKU</font><br>
                         <font size="5"><b>SMKN 4 PAYAKUMBUH</b></font><br>
                         <font size="2">Lembaga Perpustakaan Smkn 4 Payakumbuh</font><br>
                         <font size="2"><i>Jl. Koto Kociak, Kel.Padang Sikabu, Kec. Lamposi Tigo Nagori, Padang Sikabu, Kec. Lamposi Tigo Nagori, Kota Payakumbuh, Sumatera Barat 26219</i></font> 
@@ -106,25 +101,23 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Nama Peminjam</th>
                     <th>Judul</th>
-                    <th>Tanggal Peminjaman</th>
-                    <th>Tanggal Pengembalian</th>
-                    <th>Status</th>
+                    <th>Penulis</th>
+                    <th>Penerbit</th>
+                    <th>Tahun Terbit</th>
                 </tr>
             </thead>
             <tbody>
                 @php
                     $no = 1;
                 @endphp
-                @foreach($data as $peminjaman)
+                @foreach($data as $buku)
                     <tr style="text-align: center;">
                         <td>{{ $no++ }}</td>
-                        <td>{{ $peminjaman->user->username }}</td>
-                        <td>{{ $peminjaman->buku->judul }}</td>
-                        <td>{{ $peminjaman->tanggal_peminjaman }}</td>
-                        <td>{{ $peminjaman->tanggal_pengembalian }}</td>
-                        <td>{{ $peminjaman->status_peminjam }}</td>
+                        <td>{{ $buku->judul }}</td>
+                        <td>{{ $buku->penulis }}</td>
+                        <td>{{ $buku->penerbit }}</td>
+                        <td>{{ $buku->tahun_terbit }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -144,9 +137,6 @@
     <!-- Skrip JavaScript untuk cetak laporan -->
     <script>
     
-    function cetakLaporan() {
-        window.print(); // Fungsi untuk mencetak halaman
-    }
     </script>
 </body>
 </html>

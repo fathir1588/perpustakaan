@@ -45,7 +45,7 @@
                         @hasanyrole('admin|petugas')
                         <div class="col-sm-6 text-right"> <!-- Mengatur tata letak elemen di sebelah kanan -->
                             <a class="btn btn-primary" data-toggle="modal" data-target="#tambahDataModal">Tambah Buku</a>
-                            <a href="{{ route('laporan') }}" class="btn btn-success">Cetak Laporan</a>
+                            <a href="{{ route('laporan_buku') }}" class="btn btn-success">Cetak Laporan</a>
                         </div>
                         @endrole
                     </div>

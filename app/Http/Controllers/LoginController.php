@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ModelBuku;
+use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
     public function halamanlogin(){
-        return view('regis.login');
+         return view('regis.login');
 
     }
 

@@ -45,6 +45,7 @@
                         
                         <div class="col-sm-6 text-right"> <!-- Mengatur tata letak elemen di sebelah kanan -->
                             <a class="btn btn-primary" data-toggle="modal" data-target="#modal-detailpinjam">Pinjam Buku</a>
+                            <a href="{{ route('laporan_peminjam') }}" class="btn btn-success">Cetak Laporan</a>
                         </div>
                     </div>
                 </div>
