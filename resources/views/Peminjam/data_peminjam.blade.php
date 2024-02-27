@@ -42,28 +42,40 @@
                         <div class="col-sm-6">
                             <h1 class="m-0">PEMINJAMAN</h1>
                         </div>
+                        
                         <div class="col-sm-6 text-right"> <!-- Mengatur tata letak elemen di sebelah kanan -->
                             <a class="btn btn-primary" data-toggle="modal" data-target="#modal-detailpinjam">Pinjam Buku</a>
+                            <a href="{{ route('laporan_peminjam') }}" class="btn btn-success">Cetak Laporan</a>
                         </div>
+                        
                     </div>
                 </div>
             </div>
         
-            @if ($message = Session::get('success'))
-            <div class="alert alert-success" role="alert">
-                {{ $message }}
+            <div>
+                @if ($message = Session::get('success'))
+                    <div class="alert alert-success" role="alert">
+                        {{ $message }}
+                    </div>
+                @endif
+            
+                @if ($error = Session::get('error'))
+                    <div class="alert alert-danger" role="alert">
+                        {{ $error }}
+                    </div>
+                @endif
             </div>
-            @endif
-        
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th scope="col" class="text-center">NO</th>
                         <th scope="col" class="text-center">PEMINJAM</th>
                         <th scope="col" class="text-center">BUKU</th>
+                        <th scope="col" class="text-center">Jumlah</th>
                         <th scope="col" class="text-center">TANGGAL PEMINJAMAN</th>
                         <th scope="col" class="text-center">Tanggal Pengembalian</th>
                         <th scope="col" class="text-center">Status</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -72,11 +84,24 @@
                     @foreach($peminjamans as $p)
                     <tr>
                         <td class="text-center">{{ $no++ }}</td>
-                        <td class="text-center">{{ $p->user_id }}</td>
-                        <td class="text-center">{{ $p->buku_id }}</td>
+                        <td class="text-center">{{ $p->user->username }}</td>
+                        <td class="text-center">{{ $p->buku->judul }}</td>
+                        <td class="text-center">{{ $p->jumlahPinjaman }}</td>
                         <td class="text-center">{{ $p->tanggal_peminjaman}}</td>
                         <td class="text-center">{{ $p->tanggal_pengembalian}}</td>
-                        <td class="text-center">{{ $p->status }}</td>    
+                        <td class="text-center">
+                            <form action="{{ route('peminjaman.return', $p->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="status-btn btn btn-sm 
+                                    @if($p->status_peminjam == 'sudah dikembalikan') btn-success @else btn-danger @endif">
+                                    <i class="fas fa-{{ $p->status_peminjam == 'sudah dikembalikan' ? 'check' : 'times' }}"></i>
+                                    {{ ucfirst($p->status_peminjam) }}
+                                </button>
+                            </form>
+                            
+                        </td>
+
                     </tr>
                     @endforeach
                     @else
@@ -102,44 +127,39 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title font-weight-bold">Detail Buku</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-
-                <!-- Formulir Detail Pinjam -->
-                <form action="{{ route('peminjaman.store') }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="card-body">
-                            <!-- Isi Detail Buku -->
-                            <div class="form-group">
-                                <label for="judul">Judul</label>
-                                <select class="form-control" id="judul" name="judul" required>
-                                        @foreach ($buku as $item)
-                                        <option value="{{ $item->judul }}">{{ $item->judul }}</option>
-                                        @endforeach
-                                </select>
-                            </div>
-                          <div class="form-group">
-                            <label for="stok">Jumlah Pinjam</label>
-                            <input type="number" class="form-control" id="stok" name="stok" value="1" min="1" max="{{ $item->stok }}" required autofocus>
+    
+                <div class="modal-body">
+                    <form action="{{ route('peminjaman.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                        <div class="form-group">
+                            <label for="buku_id">Pilih Buku:</label>
+                            <select name="buku_id" id="buku_id" class="form-control" required>
+                                @foreach($buku as $item)
+                                <option value="{{ $item->id }}">{{ $item->judul }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                          <!-- Tambahkan Input Hidden untuk buku_id -->
-                          {{-- <input type="hidden" name="buku_id" value="{{ $item->id }}"> --}}
-                          
-                          <!-- Tambahkan Input Tanggal Peminjaman -->
-                          <div class="form-group">
-                              <label for="tanggal_peminjaman">Tanggal Peminjaman</label>
-                              <input type="text" class="form-control" id="tanggal_peminjaman" name="tanggal_peminjaman" value="{{ $item->created_at }}" readonly>
-                          </div>
+                        <div class="form-group">
+                            <label for="tanggal_peminjaman">Tanggal Peminjaman:</label>
+                            <input type="date" name="tanggal_peminjaman" id="tanggal_peminjaman" class="form-control" required>
                         </div>
-                        <div class="modal-footer justify-content-end">
-                            <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-primary font-weight-bold">Konfirmasi Pinjam</button>
+                        <div class="form-group">
+                            <label for="jumlahPinjaman">Jumlah Pinjaman:</label>
+                            <input type="number" name="jumlahPinjaman" id="jumlahPinjaman" class="form-control" required>
                         </div>
-                    </div>
-                </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Pinjam Buku</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+    
     @endforeach
 
 
@@ -196,6 +216,45 @@
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
 </body>
 <script>
+    $('.pengembalian').click(function() {
+        var button = $(this); // Simpan referensi tombol pengembalian yang diklik
+        var peminjamanId = button.attr('data-id');
+        var judulBuku = button.attr('data-judul');
+
+        Swal.fire({
+            title: 'Konfirmasi Pengembalian Buku',
+            text: 'Apakah Anda yakin ingin mengembalikan buku ' + judulBuku + '?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Saya Yakin',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Menggunakan AJAX untuk mengirim permintaan POST
+                $.ajax({
+                    url: '/peminjaman/' + peminjamanId + '/return',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}' // Menyertakan token CSRF langsung di sini
+                    },
+                    success: function(response) {
+                        // Tindakan setelah pengembalian berhasil
+                        Swal.fire('Berhasil!', 'Buku berhasil dikembalikan.', 'success');
+                        // Sembunyikan tombol pengembalian yang telah diklik
+                        button.hide();
+                    },
+                    error: function(xhr, status, error) {
+                        // Tindakan jika terjadi kesalahan
+                        Swal.fire('Error!', 'Terjadi kesalahan saat mengembalikan buku.', 'error');
+                    }
+                });
+            }
+        });
+    });
+
+
+
+    
 $('.delete').click( function(){
 
     var bukuid = $(this).attr('data-id')

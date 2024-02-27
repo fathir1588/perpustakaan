@@ -27,28 +27,30 @@ class RegistrasiController extends Controller
     public function register(Request $request)
     {
         // Validate the form data
-        // dd($request->username);
-        $request->validate([
+        $validatedData = $request->validate([
             'username' => ['required', 'string', 'max:250'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:3'],
-            'role' => ['required', 'string', 'in:admin,petugas,peminjam'],
         ]);
         
         // Check if the username is available
         if (User::where('username', $request->username)->exists()) {
             return back()->withErrors(['username' => 'Username sudah digunakan.'])->withInput();
         }
-        
+        $request['role'] = 'peminjam';
         // Create the user
-        User::create([
+        $user =  User::create([
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role'=> $request->role,
         ]);
-
+    
+        // Assign the role "peminjam" to the user
+        $user->assignRole('peminjam');
+    
         // Redirect the user after registration
         return redirect()->route('login')->with('success', 'Registrasi berhasil. Silakan login.');
     }
+    
 }

@@ -14,7 +14,7 @@ class CreatePeminjamanTable extends Migration
             $table->foreignId('buku_id')->constrained('tabel_buku');
             $table->date('tanggal_peminjaman');
             $table->date('tanggal_pengembalian')->nullable();
-            $table->enum('status_peminjam', ['pending', 'success'])->default('pending');
+            $table->enum('status_peminjam', ['belum dikembalikan', 'sudah dikembalikan'])->default('belum dikembalikan');
             $table->integer('jumlahPinjaman');
             $table->timestamps();
         });
