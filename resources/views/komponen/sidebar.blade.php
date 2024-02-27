@@ -39,7 +39,7 @@
                         </p>
                     </a>
                 </li>
-                @hasanyrole('admin|petugas')
+                @hasanyrole('admin')
                 <li class="nav-item">
                     <a href="/petugas" class="nav-link">
                         <i class="nav-icon fas fa-clipboard-user"></i>

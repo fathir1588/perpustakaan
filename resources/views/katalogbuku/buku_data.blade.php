@@ -45,17 +45,27 @@
                         @hasanyrole('admin|petugas')
                         <div class="col-sm-6 text-right"> <!-- Mengatur tata letak elemen di sebelah kanan -->
                             <a class="btn btn-primary" data-toggle="modal" data-target="#tambahDataModal">Tambah Buku</a>
+                            <a href="{{ route('laporan') }}" class="btn btn-success">Cetak Laporan</a>
                         </div>
                         @endrole
                     </div>
                 </div>
             </div>
+            
         
-            @if ($message = Session::get('success'))
-            <div class="alert alert-success" role="alert">
-                {{ $message }}
+            <div>
+                @if ($message = Session::get('success'))
+                    <div class="alert alert-success" role="alert">
+                        {{ $message }}
+                    </div>
+                @endif
+            
+                @if ($error = Session::get('error'))
+                    <div class="alert alert-danger" role="alert">
+                        {{ $error }}
+                    </div>
+                @endif
             </div>
-            @endif
         
             <table class="table table-striped table-bordered">
                 <thead>
@@ -65,6 +75,7 @@
                         <th scope="col" class="text-center">PENULIS</th>
                         <th scope="col" class="text-center">PENERBIT</th>
                         <th scope="col" class="text-center">TAHUN TERBIT</th>
+                        <th scope="col" class="text-center">STOK</th>
                         @hasanyrole('admin|petugas')
                         <th scope="col" class="text-center">AKSI</th>
                         @endrole
@@ -80,6 +91,7 @@
                         <td class="text-center">{{ $v->penulis }}</td>
                         <td class="text-center">{{ $v->penerbit }}</td>
                         <td class="text-center">{{ $v->tahun_terbit }}</td>
+                        <td class="text-center">{{ $v->stok }}</td>
                         @hasanyrole('admin|petugas')
                         <td class="text-center">
         
@@ -136,6 +148,10 @@
               <label for="tahun_terbit" class="form-label">Tahun Terbit</label>
               <input type="number" class="form-control" id="tahun_terbit" name="tahun_terbit" placeholder="Masukkan tahun terbit" required>
             </div>
+            <div class="form-group">
+                <label for="stok">Stok</label>
+                <input type="text" class="form-control" id="stok" name="stok" placeholder="Masukkan Stok" required>
+            </div>
             <button type="submit" class="btn btn-primary">Tambah</button>
           </form>
         </div>
@@ -175,6 +191,10 @@
                               <label for="alamat">Tahun Terbit</label>
                               <input type="text" class="form-control" name="tahun_terbit" value="{{ $item->tahun_terbit }}" required>
                           </div>
+                          <div class="form-group">
+                            <label for="stok">Stok</label>
+                            <input type="text" class="form-control" id="stok" name="stok" value="{{ $item->stok }}" placeholder="Masukkan Stok" required>
+                        </div>
                       </div>
                       <div class="modal-footer justify-content-between">
                           <button type="button" class="btn btn-default font-weight-bold" data-dismiss="modal">BATAL</button>
@@ -243,6 +263,14 @@
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
 </body>
 <script>
+
+    
+    function cetakLaporan() {
+        window.print(); // Fungsi untuk mencetak halaman
+    }
+
+
+
 $('.delete').click( function(){
 
     var bukuid = $(this).attr('data-id')
